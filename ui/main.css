@@ -1,0 +1,42 @@
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#map { height: 300px; }
+
+.mid {
+  fill: steelblue;
+  fill-opacity: 0.5;
+}
+.lgm {
+  fill: grey;
+  fill-opacity: 0.5;
+}
+.cur {
+  stroke-width: 2;
+  stroke: black;
+  stroke-opacity: 1.0;
+}
+.y50-26 {
+  fill: green;
+  fill-opacity: 0.00;
+}
+.y70-26 {
+  fill: purple;
+  fill-opacity: 0.00;
+}
+.y50-85 {
+  fill: orange;
+  fill-opacity: 0.50;
+}
+.y70-85 {
+  fill: purple;
+  fill-opacity: 0.50;
+}
