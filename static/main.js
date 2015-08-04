@@ -28,43 +28,38 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("data.json", function(error, data) {
-  if (error) throw error;
+x.domain([1, 12])
+y.domain([-20, 50]);
 
-  x.domain([1,12])
-  y.domain([0, 35]);
+svg.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis);
 
-  data.forEach(function(d, i) {
-      console.log(d, i)
-      svg.append("path")
-          .datum(d.data)
-          .attr("class", d.period)
-          .attr("d", area);
-  });
+svg.append("g")
+  .attr("class", "y axis")
+  .call(yAxis)
+.append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 6)
+  .attr("dy", ".71em")
+  .style("text-anchor", "end")
+  .text("Degrees (C)");
 
+function updateChart(ll) {
+    url = "/api?lat=" + ll.lat + "&lng=" + ll.lng;
+    d3.json(url, function(error, data) {
+      if (error) throw error;
+      data.results.forEach(function(d, i) {
+          svg.append("path")
+              .datum(d.data)
+              .attr("class", d.period + " cloud")
+              .attr("d", area);
+      });
+    });
+    // TODO remove loading
+};
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-    .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Degrees (C)");
-});
-
-// var mapbox = L.tileLayer('http://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-//     attribution: 'Imagery from <a href="http://mapbox.com/about/maps/">MapBox</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-//     subdomains: 'abcd',
-//     id: 'perrygeo',
-//     accessToken: 'pk.eyJ1IjoicGVycnlnZW8iLCJhIjoiNjJlNTZmNTNjZTFkZTE2NDUxMjg2ZDg2ZDdjMzI5NTEifQ.-f-A9HuHrPZ7fHhlZxYLHQ'
-// });
 var base = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
     type: 'map',
     ext: 'jpg',
@@ -78,6 +73,15 @@ var map = L.map('map', {
     layers: [base]
 });
 
+var marker;
 map.on('click', function(e) {
-    alert(e.latlng);
+    if (marker) {
+        map.removeLayer(marker);
+    }
+    d3.selectAll(".cloud").remove();
+    marker = L.marker(e.latlng);
+    marker.addTo(map);
+    // TODO loading
+    updateChart(e.latlng);
 });
+
