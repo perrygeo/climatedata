@@ -9,34 +9,54 @@ body {
   shape-rendering: crispEdges;
 }
 
-#map { height: 300px; }
 
-.mid {
-  fill: steelblue;
-  fill-opacity: 0.5;
-}
-.lgm {
-  fill: grey;
-  fill-opacity: 0.5;
-}
-.cur {
+#map { height: 250px; width: 500px;}
+
+
+.median {
+  fill: none;
   stroke-width: 2;
+  stroke-opacity: 0.99;
+}
+.mmid {
+  stroke: steelblue;
+  stroke-dasharray: 3,5;
+}
+.mlgm {
+  stroke: blue;
+  stroke-dasharray: 3,5;
+}
+.m50 {
+  stroke: green;
+  stroke-dasharray: 12,12;
+}
+.m70 {
+  stroke: red;
+  stroke-dasharray: 12,12;
+}
+.mcurrent {
+  /* measured, no uncertainty */
   stroke: black;
-  stroke-opacity: 1.0;
+  stroke-width: 3px;
+  stroke-opacity: 0.9;
 }
-.y50-26 {
-  fill: green;
-  fill-opacity: 0.00;
+
+
+
+/* uncertainty */
+.uncertainty {
+  fill-opacity: 0.2;
 }
-.y70-26 {
+.umid {
+  fill: steelblue;
+}
+.ulgm {
+  fill: blue;
+}
+.u50 {
+  fill: orange;
+}
+.u70 {
   fill: purple;
-  fill-opacity: 0.00;
 }
-.y50-85 {
-  fill: light-green;
-  fill-opacity: 0.50;
-}
-.y70-85 {
-  fill: green;
-  fill-opacity: 0.50;
-}
+

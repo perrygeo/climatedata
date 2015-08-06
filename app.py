@@ -1,5 +1,6 @@
 import pandas
 from rasterstats import zonal_stats
+from statistics import median  # python 3.4 only
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
@@ -11,6 +12,7 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70"):
              (df['period'] == period)]
 
     mins = []
+    medians = []
     maxes = []
     wkt = 'POINT({} {})'.format(lng, lat)
     for month in [x+1 for x in range(12)]:
@@ -26,30 +28,32 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70"):
         # find min, max for this month
         mins.append(min(vals))
         maxes.append(max(vals))
+        medians.append(median(vals))
 
     # months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
     # from collections import OrderedDict
     # return OrderedDict(zip(months, zip(mins, maxes)))
 
-    return [{'month': i+1, 'min': x[0], 'max': x[1]}
-            for i, x in enumerate(zip(mins, maxes))]
+    return [{'month': i+1, 'min': x[0], 'median': x[1], 'max': x[2]}
+            for i, x in enumerate(zip(mins, medians, maxes))]
 
 
-@app.route("/api")
-def api():
-    lat = request.args.get('lat')
-    lng = request.args.get('lng')
-    df = pandas.read_csv("climate_data.csv")
-    data = [
-        # {"period": "mid", "data": query_clim(df, lat=lat, lng=lng, rcp='na', period='mid')},
-        {"period": "lgm", "data": query_clim(df, lat=lat, lng=lng, rcp='na', period='lgm')},
-        {"period": "cur", "data": query_clim(df, lat=lat, lng=lng, rcp='na', period='current')},
-        # {"period": "y50-26", "data": query_clim(df, lat=lat, lng=lng, rcp='26', period='50')},
-        # {"period": "y70-26", "data": query_clim(df, lat=lat, lng=lng, rcp='26', period='70')},
-        {"period": "y50-85", "data": query_clim(df, lat=lat, lng=lng, rcp='85', period='50')},
-        {"period": "y70-85", "data": query_clim(df, lat=lat, lng=lng, rcp='85', period='70')}
-    ]
+# Load dataframe in global scope
+df = pandas.read_csv("climate_data.csv")
+
+
+@app.route("/api/<period>")
+def api(period):
+    kwargs = dict(
+        lat=request.args.get('lat'),
+        lng=request.args.get('lng'),
+        period=period,
+        rcp=request.args.get('rcp') if 'rcp' in request.args else 'na')
+
+    data = {"period": period,
+            "data": query_clim(df, **kwargs)}
+
     return jsonify(results=data)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
