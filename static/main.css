@@ -23,11 +23,11 @@ body {
   stroke-dasharray: 3,5;
 }
 .mlgm {
-  stroke: blue;
+  stroke: green;
   stroke-dasharray: 3,5;
 }
 .m50 {
-  stroke: green;
+  stroke: blue;
   stroke-dasharray: 12,12;
 }
 .m70 {
@@ -51,12 +51,12 @@ body {
   fill: steelblue;
 }
 .ulgm {
-  fill: blue;
+  fill: green;
 }
 .u50 {
-  fill: orange;
+  fill: blue; 
 }
 .u70 {
-  fill: purple;
+  fill: red;
 }
 

@@ -34,8 +34,14 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70"):
     # from collections import OrderedDict
     # return OrderedDict(zip(months, zip(mins, maxes)))
 
-    return [{'month': i+1, 'min': x[0], 'median': x[1], 'max': x[2]}
-            for i, x in enumerate(zip(mins, medians, maxes))]
+    data = {
+        "period": period,
+        "min": min(mins),
+        "max": max(maxes),
+        "data": [{'month': i+1, 'min': x[0], 'median': x[1], 'max': x[2]}
+                 for i, x in enumerate(zip(mins, medians, maxes))]}
+
+    return data
 
 
 # Load dataframe in global scope
@@ -50,10 +56,8 @@ def api(period):
         period=period,
         rcp=request.args.get('rcp') if 'rcp' in request.args else 'na')
 
-    data = {"period": period,
-            "data": query_clim(df, **kwargs)}
-
-    return jsonify(results=data)
+    data = query_clim(df, **kwargs)
+    return jsonify(data)
 
 if __name__ == "__main__":
     app.run(debug=True)

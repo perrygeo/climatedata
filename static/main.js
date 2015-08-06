@@ -46,9 +46,6 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Month");
 
-  // .attr("y", 6)
-  // .attr("dy", ".71em")
-  //
 svg.append("g")
   .attr("class", "y axis")
   .call(yAxis)
@@ -63,6 +60,11 @@ function updateChart(ll) {
     var periods = ["lgm", "current", "50", "70"]; // removed "mid"
     var defaultRcp = "85";
 
+    var domain = y.domain();
+    var globalMin = 999;
+    var globalMax = -999;
+    var rescaleAxis = false;
+
     periods.forEach(function(period, i) {
         url = "/api/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng;
         if (period == "50" || period == "70") {
@@ -73,15 +75,37 @@ function updateChart(ll) {
 
             if (period != "current") {
                 svg.append("path")
-                    .datum(d.results.data)
-                    .attr("class", "u" + d.results.period + " uncertainty clim")
+                    .datum(d.data)
+                    .attr("class", "u" + d.period + " uncertainty clim")
                     .attr("d", area);
             };
 
             svg.append("path")
-                .datum(d.results.data)
-                .attr("class", "m" + d.results.period + " median clim")
+                .datum(d.data)
+                .attr("class", "m" + d.period + " median clim")
                 .attr("d", line);
+
+            if (d.min < globalMin) {
+                globalMin = d.min;
+                rescaleAxis = true;
+            }
+            if (d.max > globalMax) {
+                globalMax = d.max;
+                rescaleAxis = true;
+            }
+            if (rescaleAxis) {
+
+                y.domain([globalMin, globalMax]);
+                console.log(y.domain());
+                yAxis.scale(y)
+                svg.select(".y.axis")
+                    .transition()
+                    .duration(500)
+                    .ease("sin-in-out")
+                    .call(yAxis);
+                svg.selectAll(".uncertainty").attr("d", area);
+                svg.selectAll(".median").attr("d", line);
+            };
         });
     });
 };
