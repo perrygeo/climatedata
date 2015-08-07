@@ -126,25 +126,13 @@ function updateChart(ll) {
     });
 };
 
-var base = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
-    type: 'map',
-    continuousWorld: false,
-    noWrap: true,
-    ext: 'jpg',
-    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    subdomains: '1234'
-});
+L.mapbox.accessToken = 'pk.eyJ1IjoicGVycnlnZW8iLCJhIjoiNjJlNTZmNTNjZTFkZTE2NDUxMjg2ZDg2ZDdjMzI5NTEifQ.-f-A9HuHrPZ7fHhlZxYLHQ';
 
-var southWest = L.latLng(-90, -180),
-    northEast = L.latLng(90, 180),
-    bounds = L.latLngBounds(southWest, northEast);
+var map = L.mapbox.map('map', 'mapbox.outdoors')
+    .setView([0, 0], 1);
 
-var map = L.map('map', {
-    center: [0, 0],
-    zoom: 1,
-    maxBounds: bounds,
-    layers: [base]
-});
+var geocoderControl = L.mapbox.geocoderControl('mapbox.places');
+geocoderControl.addTo(map);
 
 var marker;
 var coordinates = document.getElementById('coordinates');
