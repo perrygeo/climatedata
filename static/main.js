@@ -4,9 +4,9 @@ var defaultRcp = "85";
 var units = "F";
 var variable = "tx"; // tn, pr
 
-// D3.js 
-var margin = {top: 10, right: 20, bottom: 30, left: 50},
-    width = 500 - margin.left - margin.right,
+// D3.js
+var margin = {top: 10, right: 80, bottom: 30, left: 50},
+    width = 560 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -63,6 +63,22 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Degrees ("+ units + ")");
 
+function label(d) {
+    var last = d[d.length - 1];
+    return y(last.median);
+}
+
+function periodLookup(p) {
+    var periods = {
+        "current": "1950-2000",
+        "lgm": "~20000 BC",
+        "50": "2040-2060",
+        "70": "2060-2080",
+        "mid": "~4000 BC"
+    }
+    return periods[p];
+}
+
 function updateChart(ll) {
     var periods = ["current", "lgm", "50", "70", "mid"];
 
@@ -98,7 +114,16 @@ function updateChart(ll) {
             svg.append("path")
                 .datum(d.data)
                 .attr("class", "period-" + d.period + " median clim")
-                .attr("d", line);
+                .attr("d", line)
+
+            svg.append("text")
+                .datum(d.data)
+                .attr("y", label)
+                .attr("x", width)
+                .attr("dx", ".21em")
+                .style("text-anchor", "start")
+                .attr("class", "period-" + d.period + " label clim")
+                .text(periodLookup(d.period));
 
             if (d.min < globalMin) {
                 globalMin = d.min;
@@ -109,7 +134,6 @@ function updateChart(ll) {
                 rescaleAxis = true;
             }
             if (rescaleAxis) {
-
                 y.domain([globalMin, globalMax]);
                 yAxis.scale(y)
                 svg.select(".y.axis")
@@ -121,6 +145,9 @@ function updateChart(ll) {
                 svg.selectAll(".median")
                     .transition().duration(500).ease("sin-in-out")
                     .attr("d", line);
+                svg.selectAll(".label")
+                    .transition().duration(500).ease("sin-in-out")
+                    .attr("y", label)
             };
         });
     });

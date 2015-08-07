@@ -44,6 +44,10 @@ body {
   stroke-opacity: 0.9;
 }
 
+.label {
+  stroke-width: 0;
+}
+
 .median {
   fill: none;
   stroke-width: 2;
