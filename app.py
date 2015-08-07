@@ -52,7 +52,10 @@ def api(period):
         period=period,
         rcp=request.args.get('rcp') if 'rcp' in request.args else 'na')
 
+    timestamp = request.args.get('timestamp', default=0.0, type=float)
+
     data = query_clim(df, **kwargs)
+    data['timestamp'] = timestamp
     return jsonify(data)
 
 if __name__ == "__main__":

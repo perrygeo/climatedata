@@ -56,6 +56,8 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Degrees (C)");
 
+var timestamp;
+
 function updateChart(ll) {
     var periods = ["current", "lgm", "50", "70", "mid"];
     var defaultRcp = "85";
@@ -65,13 +67,23 @@ function updateChart(ll) {
     var globalMax = -999;
     var rescaleAxis = false;
 
+    timestamp = Date.now();
+
     periods.forEach(function(period, i) {
-        url = "/api/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng;
+        url = "/api/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng + "&timestamp=" + timestamp;
         if (period == "50" || period == "70") {
             url += "&rcp=" + defaultRcp;
         }
         d3.json(url, function(error, d) {
-            if (error) throw error;
+            if (error) {
+                console.log(error);
+                alert("Error, check console");
+                return false;
+            }
+            if (d.timestamp != timestamp) {
+                console.log("timestamps don't match; discard");
+                return false;
+            };
 
             if (period != "current") {
                 svg.append("path")
