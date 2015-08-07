@@ -18,7 +18,22 @@
             <div id="map"></div>
             <div id="coordinates"></div>
         </div>
-        <div id="chart"></div>
+        <div>
+            <p>
+            <form id="climateOpts">
+                <select id="selectVariable">
+                    <option value="tx" SELECTED>Average monthly maximum temperature</option>
+                    <option value="tn">Average monthly minimum temperature</option>
+                    <option value="pr">Average monthly precipitation</option>
+                </select>
+                <select id="selectRcp">
+                    <option value="26">Use low emission scenario</option>
+                    <option value="85" SELECTED>Use high emission scenario</option>
+                </select>
+            </form>
+            </p>
+            <div id="chart"></div>
+        </div>
     </div>
     <div class="footer">
         <p>

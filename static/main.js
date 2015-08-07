@@ -1,6 +1,6 @@
 
 var timestamp;
-var defaultRcp = "85";
+var rcp = "85";
 var units = "F";
 var variable = "tx"; // tn, pr
 
@@ -60,8 +60,28 @@ svg.append("g")
   .attr("transform", "rotate(-90)")
   .attr("y", 6)
   .attr("dy", ".71em")
+  .attr("class", "ylabel")
   .style("text-anchor", "end")
   .text("Degrees ("+ units + ")");
+
+d3.select("#selectVariable").on("change", function(){
+    variable = this.value;
+    d3.select(".ylabel").text(labelLookup(variable));
+    if (currentLatLng) {
+        d3.selectAll(".clim").remove();
+        updateChart(currentLatLng, false);
+    }
+});
+
+d3.select("#selectRcp").on("change", function(){
+    rcp = this.value;
+    if (currentLatLng) {
+        d3.selectAll(".period-50").remove();
+        d3.selectAll(".period-70").remove();
+        updateChart(currentLatLng, true);
+    }
+});
+
 
 function label(d) {
     var last = d[d.length - 1];
@@ -79,7 +99,19 @@ function periodLookup(p) {
     return periods[p];
 }
 
-function updateChart(ll) {
+function labelLookup(x) {
+    var labels = {
+        "tn": "Degrees ("+ units + ")",
+        "tx": "Degrees ("+ units + ")",
+        "pr": "Precipitation (mm)"
+    }
+    return labels[x];
+}
+
+function updateChart(ll, futureOnly) {
+    if (futureOnly === undefined) {
+        futureOnly = false;
+    }
     var periods = ["current", "lgm", "50", "70", "mid"];
 
     var domain = y.domain();
@@ -93,7 +125,9 @@ function updateChart(ll) {
         url = "/api/" + variable + "/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng;
         url += "&timestamp=" + timestamp + "&units=" + units;
         if (period == "50" || period == "70") {
-            url += "&rcp=" + defaultRcp;
+            url += "&rcp=" + rcp;
+        } else {
+            if (futureOnly) return;
         }
         d3.json(url, function(error, d) {
             if (error) {
@@ -133,7 +167,7 @@ function updateChart(ll) {
                 globalMax = d.max;
                 rescaleAxis = true;
             }
-            if (rescaleAxis) {
+            if (rescaleAxis && !futureOnly) {
                 y.domain([globalMin, globalMax]);
                 yAxis.scale(y)
                 svg.select(".y.axis")
@@ -162,15 +196,18 @@ var geocoderControl = L.mapbox.geocoderControl('mapbox.places');
 geocoderControl.addTo(map);
 
 var marker;
-var coordinates = document.getElementById('coordinates');
+var currentLatLng;
+var coordDisplay = document.getElementById('coordinates');
+
 map.on('click', function(e) {
     if (marker) {
         map.removeLayer(marker);
     }
     d3.selectAll(".clim").remove();
-    marker = L.marker(e.latlng.wrap());
+    currentLatLng = e.latlng.wrap();
+    marker = L.marker(currentLatLng);
     marker.addTo(map);
-    coordinates.innerHTML = 'Latitude: ' + e.latlng.lat + ' Longitude: ' + e.latlng.lng;
-    updateChart(e.latlng);
+    coordDisplay.innerHTML = 'Latitude: ' + currentLatLng.lat + ' | Longitude: ' + currentLatLng.lng;
+    updateChart(currentLatLng, false);
 });
 
