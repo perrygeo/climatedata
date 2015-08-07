@@ -6,8 +6,30 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
 </head>
 <body>
-    <div id="map"></div>
-    <div id="chart"></div>
+    <div id="intro">
+        <h1> Climate Data Explorer</h1>
+        <h2>Past, Present and Future climate summaries for any location</h2>
+        <p> Compare monthly temperature and precipitation data between current conditions, modeled past climates and predicted future climates as modeled by CMIP5. Disagreement amongst the models is represented in the shaded area while the lines represent the median model result.
+        </p>
+    </div>
+    <div>
+        <div style="float:right;">
+            <div id="map"></div>
+            <div id="coordinates"></div>
+        </div>
+        <div id="chart"></div>
+    </div>
+    <div class="footer">
+        <p>
+          Data analysis, web services, and interface development by <a href="http://perrygeo.com">Matthew T. Perry</a>.
+          <br>
+          Data source: 10 arc-minute resolution data from <a href="http://www.worldclim.org/">www.worldclim.org</a>.
+        </p>
+        <blockquote>
+  Hijmans, R.J., S.E. Cameron, J.L. Parra, P.G. Jones and A. Jarvis, 2005.
+  Very high resolution interpolated climate surfaces for global land areas. International Journal of Climatology 25: 1965-1978.
+        </blockquote>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>

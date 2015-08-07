@@ -1,6 +1,13 @@
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 700 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+
+var timestamp;
+var defaultRcp = "85";
+var units = "F";
+var variable = "tx"; // tn, pr
+
+// D3.js 
+var margin = {top: 10, right: 20, bottom: 30, left: 50},
+    width = 500 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
     .range([0, width]);
@@ -45,11 +52,6 @@ svg.append("g")
   .attr("dy", "-.31em")
   .style("text-anchor", "end")
   .text("Month");
-
-var timestamp;
-var defaultRcp = "85";
-var units = "F";
-var variable = "tx"; // tn, pr
 
 svg.append("g")
   .attr("class", "y axis")
@@ -109,7 +111,6 @@ function updateChart(ll) {
             if (rescaleAxis) {
 
                 y.domain([globalMin, globalMax]);
-                console.log(y.domain());
                 yAxis.scale(y)
                 svg.select(".y.axis")
                     .transition().duration(500).ease("sin-in-out")
@@ -140,12 +141,13 @@ var southWest = L.latLng(-90, -180),
 
 var map = L.map('map', {
     center: [0, 0],
-    zoom: 2,
+    zoom: 1,
     maxBounds: bounds,
     layers: [base]
 });
 
 var marker;
+var coordinates = document.getElementById('coordinates');
 map.on('click', function(e) {
     if (marker) {
         map.removeLayer(marker);
@@ -153,6 +155,7 @@ map.on('click', function(e) {
     d3.selectAll(".clim").remove();
     marker = L.marker(e.latlng.wrap());
     marker.addTo(map);
+    coordinates.innerHTML = 'Latitude: ' + e.latlng.lat + ' Longitude: ' + e.latlng.lng;
     updateChart(e.latlng);
 });
 

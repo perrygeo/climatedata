@@ -1,5 +1,8 @@
 body {
-  font: 10px sans-serif;
+  font: 10pt sans-serif;
+  padding: 12px;
+  font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+  max-width: 1280px;
 }
 
 .axis path,
@@ -10,7 +13,7 @@ body {
 }
 
 
-#map { height: 300px; }
+#map { height: 300px; width: 500px}
 
 
 .period-mid {
@@ -53,4 +56,16 @@ body {
 
 .leaflet-container {
   cursor: crosshair !important;
+}
+
+#coordinates {
+    height: 20px;
+    color: #777;
+    font-size: 9pt;
+}
+.footer {
+    margin-top: 56px;
+    border-top: 1px solid #ccc;
+    color: #777;
+    font-size: 9pt;
 }
