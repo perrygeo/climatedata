@@ -57,7 +57,7 @@ svg.append("g")
   .text("Degrees (C)");
 
 function updateChart(ll) {
-    var periods = ["lgm", "current", "50", "70"]; // removed "mid"
+    var periods = ["current", "lgm", "50", "70", "mid"];
     var defaultRcp = "85";
 
     var domain = y.domain();
@@ -76,13 +76,13 @@ function updateChart(ll) {
             if (period != "current") {
                 svg.append("path")
                     .datum(d.data)
-                    .attr("class", "u" + d.period + " uncertainty clim")
+                    .attr("class", "period-" + d.period + " uncertainty clim")
                     .attr("d", area);
             };
 
             svg.append("path")
                 .datum(d.data)
-                .attr("class", "m" + d.period + " median clim")
+                .attr("class", "period-" + d.period + " median clim")
                 .attr("d", line);
 
             if (d.min < globalMin) {
@@ -99,12 +99,14 @@ function updateChart(ll) {
                 console.log(y.domain());
                 yAxis.scale(y)
                 svg.select(".y.axis")
-                    .transition()
-                    .duration(500)
-                    .ease("sin-in-out")
+                    .transition().duration(500).ease("sin-in-out")
                     .call(yAxis);
-                svg.selectAll(".uncertainty").attr("d", area);
-                svg.selectAll(".median").attr("d", line);
+                svg.selectAll(".uncertainty")
+                    .transition().duration(500).ease("sin-in-out")
+                    .attr("d", area);
+                svg.selectAll(".median")
+                    .transition().duration(500).ease("sin-in-out")
+                    .attr("d", line);
             };
         });
     });

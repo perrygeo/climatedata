@@ -10,53 +10,44 @@ body {
 }
 
 
-#map { height: 250px; width: 500px;}
+#map { height: 300px; }
 
 
-.median {
-  fill: none;
-  stroke-width: 2;
-  stroke-opacity: 0.99;
+.period-mid {
+  stroke: #a6cee3;
+  fill: #a6cee3;
+  stroke-dasharray: 2,5;
 }
-.mmid {
-  stroke: steelblue;
-  stroke-dasharray: 3,5;
+.period-lgm {
+  stroke: #1f78b4;
+  fill: #1f78b4;
+  stroke-dasharray: 2,5;
 }
-.mlgm {
-  stroke: green;
-  stroke-dasharray: 3,5;
+.period-50 {
+  stroke: #b2df8a;
+  fill: #b2df8a;
+  stroke-dasharray: 6,12;
 }
-.m50 {
-  stroke: blue;
-  stroke-dasharray: 12,12;
+.period-70 {
+  stroke: #33a02c;
+  fill: #33a02c;
+  stroke-dasharray: 6,12;
 }
-.m70 {
-  stroke: red;
-  stroke-dasharray: 12,12;
-}
-.mcurrent {
+
+.period-current {
   /* measured, no uncertainty */
   stroke: black;
   stroke-width: 3px;
   stroke-opacity: 0.9;
 }
 
-
-
-/* uncertainty */
+.median {
+  fill: none;
+  stroke-width: 2;
+  stroke-opacity: 0.6;
+}
 .uncertainty {
-  fill-opacity: 0.2;
-}
-.umid {
-  fill: steelblue;
-}
-.ulgm {
-  fill: green;
-}
-.u50 {
-  fill: blue; 
-}
-.u70 {
-  fill: red;
+  fill-opacity: 0.1;
+  stroke-width: 0;
 }
 

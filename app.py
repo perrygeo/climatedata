@@ -30,10 +30,6 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70"):
         maxes.append(max(vals))
         medians.append(median(vals))
 
-    # months = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
-    # from collections import OrderedDict
-    # return OrderedDict(zip(months, zip(mins, maxes)))
-
     data = {
         "period": period,
         "min": min(mins),
