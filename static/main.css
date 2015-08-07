@@ -63,13 +63,19 @@ body {
 }
 
 #coordinates {
-    height: 20px;
+    color: #777;
+    font-size: 9pt;
+    padding: 6px;
+}
+.footer {
+    text-align: center;
+    padding-top: 36px;
+    margin-top: 36px;
+    border-top: 1px solid #eee;
     color: #777;
     font-size: 9pt;
 }
-.footer {
-    margin-top: 56px;
-    border-top: 1px solid #ccc;
-    color: #777;
-    font-size: 9pt;
+.initnote {
+    fill: #ddd;
+    font-size: 20px;
 }

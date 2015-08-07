@@ -3,6 +3,8 @@ var timestamp;
 var rcp = "85";
 var units = "F";
 var variable = "tx"; // tn, pr
+var duration = 500;
+var ease = 'quad-out'; // "sin-in-out";
 
 // D3.js
 var margin = {top: 10, right: 80, bottom: 30, left: 50},
@@ -53,6 +55,14 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Month");
 
+// Initial note
+svg.append("text")
+  .attr("y", height/2)
+  .attr("x", width/2)
+  .attr("class", "initnote")
+  .style("text-anchor", "middle")
+  .text("Click map to select location");
+
 svg.append("g")
   .attr("class", "y axis")
   .call(yAxis)
@@ -81,7 +91,6 @@ d3.select("#selectRcp").on("change", function(){
         updateChart(currentLatLng, true);
     }
 });
-
 
 function label(d) {
     var last = d[d.length - 1];
@@ -117,9 +126,10 @@ function updateChart(ll, futureOnly) {
     var domain = y.domain();
     var globalMin = 999;
     var globalMax = -999;
-    var rescaleAxis = false;
 
     timestamp = Date.now();
+
+    d3.select(".initnote").remove();
 
     periods.forEach(function(period, i) {
         url = "/api/" + variable + "/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng;
@@ -137,6 +147,7 @@ function updateChart(ll, futureOnly) {
                 console.log("timestamps don't match; discard");
                 return false;
             };
+            var rescaleAxis = false;
 
             if (period != "current") {
                 svg.append("path")
@@ -171,16 +182,16 @@ function updateChart(ll, futureOnly) {
                 y.domain([globalMin, globalMax]);
                 yAxis.scale(y)
                 svg.select(".y.axis")
-                    .transition().duration(500).ease("sin-in-out")
+                    .transition().duration(duration).ease(ease)
                     .call(yAxis);
                 svg.selectAll(".uncertainty")
-                    .transition().duration(500).ease("sin-in-out")
+                    .transition().duration(duration).ease(ease)
                     .attr("d", area);
                 svg.selectAll(".median")
-                    .transition().duration(500).ease("sin-in-out")
+                    .transition().duration(duration).ease(ease)
                     .attr("d", line);
                 svg.selectAll(".label")
-                    .transition().duration(500).ease("sin-in-out")
+                    .transition().duration(duration).ease(ease)
                     .attr("y", label)
             };
         });
