@@ -46,6 +46,11 @@ svg.append("g")
   .style("text-anchor", "end")
   .text("Month");
 
+var timestamp;
+var defaultRcp = "85";
+var units = "F";
+var variable = "tx"; // tn, pr
+
 svg.append("g")
   .attr("class", "y axis")
   .call(yAxis)
@@ -54,13 +59,10 @@ svg.append("g")
   .attr("y", 6)
   .attr("dy", ".71em")
   .style("text-anchor", "end")
-  .text("Degrees (C)");
-
-var timestamp;
+  .text("Degrees ("+ units + ")");
 
 function updateChart(ll) {
     var periods = ["current", "lgm", "50", "70", "mid"];
-    var defaultRcp = "85";
 
     var domain = y.domain();
     var globalMin = 999;
@@ -70,14 +72,13 @@ function updateChart(ll) {
     timestamp = Date.now();
 
     periods.forEach(function(period, i) {
-        url = "/api/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng + "&timestamp=" + timestamp;
+        url = "/api/" + variable + "/" + period + "?lat=" + ll.lat + "&lng=" + ll.lng;
+        url += "&timestamp=" + timestamp + "&units=" + units;
         if (period == "50" || period == "70") {
             url += "&rcp=" + defaultRcp;
         }
         d3.json(url, function(error, d) {
             if (error) {
-                console.log(error);
-                alert("Error, check console");
                 return false;
             }
             if (d.timestamp != timestamp) {
