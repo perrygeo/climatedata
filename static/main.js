@@ -63,6 +63,29 @@ svg.append("text")
   .style("text-anchor", "middle")
   .text("Click map to select location");
 
+// // append the rectangle to capture mouse
+// svg.append("rect")
+//     .attr("width", width)
+//     .attr("height", height)
+//     .style("fill", "none")
+//     .style("pointer-events", "all")
+//     .on("mouseover", function() { focus.style("display", null); })
+//     .on("mouseout", function() { focus.style("display", "none"); })
+//     .on("mousemove", mousemove);
+
+// function mousemove() {
+//     var x0 = x.invert(d3.mouse(this)[0]),
+//         i = bisectDate(data, x0, 1),
+//         d0 = data[i - 1],
+//         d1 = data[i],
+//         d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+//     focus.select("circle.y")
+//         .attr("transform",
+//                 "translate(" + x(d.date) + "," +
+//                                 y(d.close) + ")");
+// }
+
 svg.append("g")
   .attr("class", "y axis")
   .call(yAxis)
@@ -121,7 +144,7 @@ function updateChart(ll, futureOnly) {
     if (futureOnly === undefined) {
         futureOnly = false;
     }
-    var periods = ["current", "lgm", "50", "70", "mid"];
+    var periods = ["current", "mid", "50", "70"]; // , "lgm"];
 
     var domain = y.domain();
     var globalMin = 999;

@@ -13,7 +13,7 @@ body {
 }
 
 
-#map { height: 300px; width: 500px}
+#map { height: 340px; width: 500px} 
 
 
 .period-mid {
@@ -68,12 +68,12 @@ body {
     padding: 6px;
 }
 .footer {
-    text-align: center;
     padding-top: 36px;
     margin-top: 36px;
     border-top: 1px solid #eee;
     color: #777;
     font-size: 9pt;
+    /* max-width: 480px; */
 }
 .initnote {
     fill: #ddd;

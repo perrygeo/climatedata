@@ -52,6 +52,11 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
 df = pandas.read_csv("climate_data.csv")
 
 
+@app.route('/')
+def root():
+    return app.send_static_file("index.html")
+
+
 @app.route("/api/<variable>/<period>")
 def api(variable, period):
     kwargs = dict(

@@ -2,60 +2,80 @@
 <head>
     <meta charset="utf-8">
     <style link="main.css"></style>
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <!-- <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" /> -->
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <link rel="stylesheet" type="text/css" href="/static/simplegrid.css">
     <link href='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
 </head>
 <body>
     <div id="intro">
         <h1>Climate Data Explorer</h1>
-        <h2>Local summaries of global climate models.</h2>
-        <p> 
-Climate science research generally happens at the global scale but the questions we face around climate change can involve more local decision making.
-
-This site allows you to compare monthly temperature and precipitation data between measured current conditions, modeled past climates and predicted future climates for any point on earth. 
-
- The <em>shaded areas</em> on the chart represents the range of modeled climate values while the <em>lines</em> represent the median result across all available models for that time period.
-        </p>
-    </div>
-    <div>
-        <div style="float:right;">
-            <div id="map"></div>
-            <div id="coordinates"></div>
-        </div>
-        <div>
-            <p>
-            <form id="climateOpts">
-                <select id="selectVariable">
-                    <option value="tx" SELECTED>Average monthly maximum temperature</option>
-                    <option value="tn">Average monthly minimum temperature</option>
-                    <option value="pr">Average monthly precipitation</option>
-                </select>
-                <select id="selectRcp">
-                    <option value="26">Use low emission scenario</option>
-                    <option value="85" SELECTED>Use high emission scenario</option>
-                </select>
-            </form>
-            </p>
-            <div id="chart"></div>
-        </div>
-    </div>
-    <div class="footer">
+        <h2>Local summaries of global climate models</h2>
         <p>
-          Data analysis, web services, and interface development by <a href="http://perrygeo.com">Matthew T. Perry</a>
-          <br>
-          This site is powered by <a href="https://github.com/perrygeo/python-rasterstats">rasterstats</a>, <a href="https://www.mapbox.com/mapbox.js/api/">Mapbox.js</a>, <a href="http://d3js.org/">D3.js</a>, and <a href="http://flask.pocoo.org/">Flask</a>
-          <br>
-          Data source: 10 arc-minute resolution data from <a href="http://www.worldclim.org/">www.worldclim.org</a>.
+Climate science research generally happens at the global scale but the questions we face around climate change can involve more local decision making. We need to understand a location's unique past, present and future climates in order to prepare for potential local impacts from global climate change.
+
+This site allows you to visualize monthly temperature and precipitation data and compare the results between measured current conditions, modeled past climates and predicted future climates for any terrestrial point location on earth.
+
+ The <em>shaded areas</em> on the chart represents the range of modeled climate results while the <em>lines</em> represent the median value across all available models for that time period.
         </p>
-        <blockquote>
-  Hijmans, R.J., S.E. Cameron, J.L. Parra, P.G. Jones and A. Jarvis, 2005.
-  Very high resolution interpolated climate surfaces for global land areas. International Journal of Climatology 25: 1965-1978.
-        </blockquote>
+    </div>
+
+
+    <div class="grid grid-pad">
+        <div class="col-1-2">
+           <div class="content">
+                <p>
+                <form id="climateOpts">
+                    <select id="selectVariable">
+                        <option value="tx" SELECTED>Average monthly maximum temperature</option>
+                        <option value="tn">Average monthly minimum temperature</option>
+                        <option value="pr">Average monthly precipitation</option>
+                    </select>
+                    <select id="selectRcp">
+                        <option value="26">Use low emission scenario</option>
+                        <option value="85" SELECTED>Use high emission scenario</option>
+                    </select>
+                </form>
+                </p>
+                <div id="chart"></div>
+           </div>
+        </div>
+        <div class="col-1-2">
+           <div class="content">
+                <div id="map"></div>
+                <div id="coordinates"></div>
+           </div>
+        </div>
+    <!-- </div> -->
+
+    <!-- <div class="grid grid-pad"> -->
+        <div class="col-3-12"><div class="content">&nbsp;</div></div>
+        <div class="col-6-12">
+            <div class="content footer">
+                <p>
+                Data analysis, web services, and interface development by
+                <a href="http://perrygeo.com">Matthew T. Perry</a>
+                </p>
+                <p>
+                This site is powered by
+                <a href="https://github.com/perrygeo/python-rasterstats">rasterstats</a>,
+                <a href="https://www.mapbox.com/mapbox.js/api/">Mapbox.js</a>,
+                <a href="http://d3js.org/">D3.js</a>, and
+                <a href="http://flask.pocoo.org/">Flask</a>
+                </p>
+                <p>
+                Data source: 10 arc-minute resolution data from
+                <a href="http://www.worldclim.org/">www.worldclim.org</a>. <br>
+                Hijmans, R.J., S.E. Cameron, J.L. Parra, P.G. Jones and A. Jarvis, 2005.
+                Very high resolution interpolated climate surfaces for global land areas.
+                International Journal of Climatology 25: 1965-1978.
+                </p>
+            </div>
+
+        </div>
+        <div class="col-3-12"><div class="content">&nbsp;</div></div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script> -->
-    <script src='https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
-    <script src="main.js"></script>
+    <script src="https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.js"></script>
+    <script src="/static/main.js"></script>
 </body>
