@@ -63,10 +63,10 @@ svg.append("text")
   .style("text-anchor", "middle")
   .text("Click map to select location");
 
-// // append the rectangle to capture mouse
 var hGuideLine = svg.append("line")
                 .attr("class", "guide-line")
                 .style("display", "none");
+
 var hGuideLineText = svg.append("text")
                 .attr("x", x(12))
                 .attr("dy", "0.3em")
@@ -74,14 +74,8 @@ var hGuideLineText = svg.append("text")
                 .style("text-anchor", "start")
                 .attr("class", "guide-line")
                 .style("display", "none");
+
 var vGuideLine = svg.append("line")
-                .attr("class", "guide-line")
-                .style("display", "none");
-var vGuideLineText = svg.append("text")
-                .attr("y", 0)
-                .attr("dy", "0.3em")
-                .attr("dx", "-0.3em")
-                .style("text-anchor", "end")
                 .attr("class", "guide-line")
                 .style("display", "none");
 
@@ -132,21 +126,18 @@ function mousemove() {
     var ty = d3.mouse(this)[1];
     var month = x.invert(tx);
     var value = y.invert(ty);
-    hGuideLine.attr("x1", x(0))
+    hGuideLine.attr("x1", 0)
               .attr("y1", ty)
-              .attr("x2", x(12))
+              .attr("x2", width)
               .attr("y2", ty);
 
     hGuideLineText.text(Math.round(value))
                   .attr("y", ty);
-    // debugger;
 
     vGuideLine.attr("x1", tx)
-              .attr("y1", y(y.domain()[0]))
+              .attr("y1", 0)
               .attr("x2", tx)
-              .attr("y2", y(y.domain()[1]));
-    vGuideLineText.text(Math.round(month))
-                  .attr("x", tx);
+              .attr("y2", height);
 }
 
 function label(d) {
@@ -223,7 +214,7 @@ function updateChart(ll, futureOnly) {
             if (rescaleAxis && !futureOnly) {
                 y.domain([globalMin, globalMax]);
                 yAxis.scale(y);
-                dyn.select(".y.axis")
+                svg.select(".y.axis")
                     .transition().duration(duration).ease(ease)
                     .call(yAxis);
                 dyn.selectAll(".uncertainty")
