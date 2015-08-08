@@ -109,8 +109,8 @@ d3.select("#selectVariable").on("change", function(){
 d3.select("#selectRcp").on("change", function(){
     rcp = this.value;
     if (currentLatLng) {
-        d3.selectAll(".period-50").remove();
-        d3.selectAll(".period-70").remove();
+        d3.selectAll(".clim.period-50").remove();
+        d3.selectAll(".clim.period-70").remove();
         updateChart(currentLatLng, true);
     }
 });
@@ -118,17 +118,6 @@ d3.select("#selectRcp").on("change", function(){
 function label(d) {
     var last = d[d.length - 1];
     return y(last.median);
-}
-
-function periodLookup(p) {
-    var periods = {
-        "current": "1950-2000",
-        "lgm": "~20000 BC",
-        "50": "2040-2060",
-        "70": "2060-2080",
-        "mid": "~4000 BC"
-    }
-    return periods[p];
 }
 
 function labelLookup(x) {
@@ -144,7 +133,7 @@ function updateChart(ll, futureOnly) {
     if (futureOnly === undefined) {
         futureOnly = false;
     }
-    var periods = ["current", "mid", "50", "70"]; // , "lgm"];
+    var periods = ["current", "mid", "70"]; // "50" , "lgm"];
 
     var domain = y.domain();
     var globalMin = 999;
@@ -162,6 +151,9 @@ function updateChart(ll, futureOnly) {
         } else {
             if (futureOnly) return;
         }
+
+        d3.selectAll(".label.period-" + period).classed("loading-period", true);
+
         d3.json(url, function(error, d) {
             if (error) {
                 return false;
@@ -184,14 +176,7 @@ function updateChart(ll, futureOnly) {
                 .attr("class", "period-" + d.period + " median clim")
                 .attr("d", line)
 
-            svg.append("text")
-                .datum(d.data)
-                .attr("y", label)
-                .attr("x", width)
-                .attr("dx", ".21em")
-                .style("text-anchor", "start")
-                .attr("class", "period-" + d.period + " label clim")
-                .text(periodLookup(d.period));
+            d3.select(".label.period-" + d.period).classed("loading-period", false);
 
             if (d.min < globalMin) {
                 globalMin = d.min;
@@ -213,9 +198,6 @@ function updateChart(ll, futureOnly) {
                 svg.selectAll(".median")
                     .transition().duration(duration).ease(ease)
                     .attr("d", line);
-                svg.selectAll(".label")
-                    .transition().duration(duration).ease(ease)
-                    .attr("y", label)
             };
         });
     });

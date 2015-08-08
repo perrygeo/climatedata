@@ -13,27 +13,31 @@ body {
 }
 
 
-#map { height: 340px; width: 500px} 
+#map { height: 340px; width: 500px}
 
 
 .period-mid {
-  stroke: #a6cee3;
-  fill: #a6cee3;
+  stroke: steelblue; 
+  fill: steelblue;
+  color: steelblue;
   stroke-dasharray: 2,5;
 }
 .period-lgm {
   stroke: #1f78b4;
   fill: #1f78b4;
+  color: #1f78b4;
   stroke-dasharray: 2,5;
 }
 .period-50 {
-  stroke: #b2df8a;
-  fill: #b2df8a;
+  stroke: darkblue;
+  fill:   darkblue;
+  color:  darkblue;
   stroke-dasharray: 6,12;
 }
 .period-70 {
-  stroke: #33a02c;
-  fill: #33a02c;
+  stroke: green;
+  fill:   green;
+  color:  green;
   stroke-dasharray: 6,12;
 }
 
@@ -42,10 +46,16 @@ body {
   stroke: black;
   stroke-width: 3px;
   stroke-opacity: 0.9;
+  color: black;
+  font-weight: bold;
 }
 
 .label {
-  stroke-width: 0;
+  /* stroke-width: 0; */
+  padding-right: 20px;
+}
+.label-container {
+  padding-left: 50px;
 }
 
 .median {
@@ -78,4 +88,11 @@ body {
 .initnote {
     fill: #ddd;
     font-size: 20px;
+}
+.loading-period {
+    color: #eee !important;
+    border-bottom: 1px #eee dotted;
+}
+.content {
+  text-align: center;
 }
