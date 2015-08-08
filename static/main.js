@@ -158,7 +158,7 @@ function updateChart(ll, futureOnly) {
     if (futureOnly === undefined) {
         futureOnly = false;
     }
-    var periods = ["current", "mid", "70", "50" , "lgm"];
+    var periods = ["current", "mid", "70", "50"]; //lgm
 
     var domain = y.domain();
     var globalMin = 999;

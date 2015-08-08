@@ -56,6 +56,10 @@ df = pandas.read_csv("climate_data.csv")
 def root():
     return app.send_static_file("index.html")
 
+@app.after_request
+def add_header(response):
+    response.cache_control.max_age = 36000
+    return response
 
 @app.route("/api/<variable>/<period>")
 def api(variable, period):

@@ -17,21 +17,21 @@ body {
 
 
 .period-mid {
-  stroke: steelblue;
-  fill: steelblue;
-  color: steelblue;
+  stroke: tan;
+  fill: tan;
+  color: tan;
   stroke-dasharray: 2,5;
 }
 .period-lgm {
-  stroke: tan;
-  fill:   tan;
-  color:  tan;
+  stroke: yellow;
+  fill:   yellow;
+  color:  yellow;
   stroke-dasharray: 2,5;
 }
 .period-50 {
-  stroke: darkblue;
-  fill:   darkblue;
-  color:  darkblue;
+  stroke: blue;
+  fill:   blue;
+  color:  blue;
   stroke-dasharray: 6,12;
 }
 .period-70 {
@@ -67,7 +67,7 @@ body {
 .median {
   fill: none;
   stroke-width: 2;
-  stroke-opacity: 0.6;
+  stroke-opacity: 1;
 }
 .uncertainty {
   fill-opacity: 0.1;
