@@ -64,27 +64,26 @@ svg.append("text")
   .text("Click map to select location");
 
 // // append the rectangle to capture mouse
-// svg.append("rect")
-//     .attr("width", width)
-//     .attr("height", height)
-//     .style("fill", "none")
-//     .style("pointer-events", "all")
-//     .on("mouseover", function() { focus.style("display", null); })
-//     .on("mouseout", function() { focus.style("display", "none"); })
-//     .on("mousemove", mousemove);
-
-// function mousemove() {
-//     var x0 = x.invert(d3.mouse(this)[0]),
-//         i = bisectDate(data, x0, 1),
-//         d0 = data[i - 1],
-//         d1 = data[i],
-//         d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-
-//     focus.select("circle.y")
-//         .attr("transform",
-//                 "translate(" + x(d.date) + "," +
-//                                 y(d.close) + ")");
-// }
+var hGuideLine = svg.append("line")
+                .attr("class", "guide-line")
+                .style("display", "none");
+var hGuideLineText = svg.append("text")
+                .attr("x", x(12))
+                .attr("dy", "0.3em")
+                .attr("dx", "0.3em")
+                .style("text-anchor", "start")
+                .attr("class", "guide-line")
+                .style("display", "none");
+var vGuideLine = svg.append("line")
+                .attr("class", "guide-line")
+                .style("display", "none");
+var vGuideLineText = svg.append("text")
+                .attr("y", 0)
+                .attr("dy", "0.3em")
+                .attr("dx", "-0.3em")
+                .style("text-anchor", "end")
+                .attr("class", "guide-line")
+                .style("display", "none");
 
 svg.append("g")
   .attr("class", "y axis")
@@ -115,6 +114,41 @@ d3.select("#selectRcp").on("change", function(){
     }
 });
 
+
+// Add before interactivity rect and have all subsequent lines appended to this group
+var dyn = svg.append("g").attr("id", "dyn");
+
+svg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .style("fill", "none")
+    .style("pointer-events", "all")
+    .on("mouseover", function() { d3.selectAll(".guide-line").style("display", null); })
+    .on("mouseout", function() { d3.selectAll(".guide-line").style("display", "none"); })
+    .on("mousemove", mousemove);
+
+function mousemove() {
+    var tx = d3.mouse(this)[0];
+    var ty = d3.mouse(this)[1];
+    var month = x.invert(tx);
+    var value = y.invert(ty);
+    hGuideLine.attr("x1", x(0))
+              .attr("y1", ty)
+              .attr("x2", x(12))
+              .attr("y2", ty);
+
+    hGuideLineText.text(Math.round(value))
+                  .attr("y", ty);
+    // debugger;
+
+    vGuideLine.attr("x1", tx)
+              .attr("y1", y(y.domain()[0]))
+              .attr("x2", tx)
+              .attr("y2", y(y.domain()[1]));
+    vGuideLineText.text(Math.round(month))
+                  .attr("x", tx);
+}
+
 function label(d) {
     var last = d[d.length - 1];
     return y(last.median);
@@ -125,7 +159,7 @@ function labelLookup(x) {
         "tn": "Degrees ("+ units + ")",
         "tx": "Degrees ("+ units + ")",
         "pr": "Precipitation (mm)"
-    }
+    };
     return labels[x];
 }
 
@@ -133,7 +167,7 @@ function updateChart(ll, futureOnly) {
     if (futureOnly === undefined) {
         futureOnly = false;
     }
-    var periods = ["current", "mid", "70"]; // "50" , "lgm"];
+    var periods = ["current", "mid", "70", "50" , "lgm"];
 
     var domain = y.domain();
     var globalMin = 999;
@@ -161,20 +195,20 @@ function updateChart(ll, futureOnly) {
             if (d.timestamp != timestamp) {
                 console.log("timestamps don't match; discard");
                 return false;
-            };
+            }
             var rescaleAxis = false;
 
             if (period != "current") {
-                svg.append("path")
+                dyn.append("path")
                     .datum(d.data)
                     .attr("class", "period-" + d.period + " uncertainty clim")
                     .attr("d", area);
-            };
+            }
 
-            svg.append("path")
+            dyn.append("path")
                 .datum(d.data)
                 .attr("class", "period-" + d.period + " median clim")
-                .attr("d", line)
+                .attr("d", line);
 
             d3.select(".label.period-" + d.period).classed("loading-period", false);
 
@@ -188,20 +222,20 @@ function updateChart(ll, futureOnly) {
             }
             if (rescaleAxis && !futureOnly) {
                 y.domain([globalMin, globalMax]);
-                yAxis.scale(y)
-                svg.select(".y.axis")
+                yAxis.scale(y);
+                dyn.select(".y.axis")
                     .transition().duration(duration).ease(ease)
                     .call(yAxis);
-                svg.selectAll(".uncertainty")
+                dyn.selectAll(".uncertainty")
                     .transition().duration(duration).ease(ease)
                     .attr("d", area);
-                svg.selectAll(".median")
+                dyn.selectAll(".median")
                     .transition().duration(duration).ease(ease)
                     .attr("d", line);
-            };
+            }
         });
     });
-};
+}
 
 L.mapbox.accessToken = 'pk.eyJ1IjoicGVycnlnZW8iLCJhIjoiNjJlNTZmNTNjZTFkZTE2NDUxMjg2ZDg2ZDdjMzI5NTEifQ.-f-A9HuHrPZ7fHhlZxYLHQ';
 

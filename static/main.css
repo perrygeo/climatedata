@@ -17,15 +17,15 @@ body {
 
 
 .period-mid {
-  stroke: steelblue; 
+  stroke: steelblue;
   fill: steelblue;
   color: steelblue;
   stroke-dasharray: 2,5;
 }
 .period-lgm {
-  stroke: #1f78b4;
-  fill: #1f78b4;
-  color: #1f78b4;
+  stroke: tan;
+  fill:   tan;
+  color:  tan;
   stroke-dasharray: 2,5;
 }
 .period-50 {
@@ -52,10 +52,16 @@ body {
 
 .label {
   /* stroke-width: 0; */
-  padding-right: 20px;
+  margin-right: 20px;
 }
+.label.period-current { border-bottom: 1px solid black; }
+.label.period-lgm { border-bottom: 1px dotted tan; }
+.label.period-mid { border-bottom: 1px dotted steelblue; }
+.label.period-50 { border-bottom: 1px dashed darkblue; }
+.label.period-70 { border-bottom: 1px dashed green; }
+
 .label-container {
-  padding-left: 50px;
+  padding-left: 40px;
 }
 
 .median {
@@ -95,4 +101,12 @@ body {
 }
 .content {
   text-align: center;
+}
+.guide-line {
+  stroke-width: 1;
+  stroke: #ddd;
+}
+text.guide-line {
+  stroke: none;
+  fill: black;
 }
