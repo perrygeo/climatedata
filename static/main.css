@@ -1,83 +1,85 @@
 body {
-  font: 10pt sans-serif;
-  padding: 12px;
-  font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
-  max-width: 1280px;
+    font: 10pt sans-serif;
+    padding: 12px;
+    font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    max-width: 1280px;
 }
-
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
-
-
-#map { height: 340px; width: 500px}
-
-
+#map {
+    height: 340px;
+    width: 500px
+}
 .period-mid {
-  stroke: tan;
-  fill: tan;
-  color: tan;
-  stroke-dasharray: 2,5;
+    stroke: tan;
+    fill: tan;
+    color: tan;
+    stroke-dasharray: 2, 5;
 }
 .period-lgm {
-  stroke: yellow;
-  fill:   yellow;
-  color:  yellow;
-  stroke-dasharray: 2,5;
+    stroke: yellow;
+    fill: yellow;
+    color: yellow;
+    stroke-dasharray: 2, 5;
 }
 .period-50 {
-  stroke: blue;
-  fill:   blue;
-  color:  blue;
-  stroke-dasharray: 6,12;
+    stroke: blue;
+    fill: blue;
+    color: blue;
+    stroke-dasharray: 6, 12;
 }
 .period-70 {
-  stroke: green;
-  fill:   green;
-  color:  green;
-  stroke-dasharray: 6,12;
+    stroke: green;
+    fill: green;
+    color: green;
+    stroke-dasharray: 6, 12;
 }
-
 .period-current {
-  /* measured, no uncertainty */
-  stroke: black;
-  stroke-width: 3px;
-  stroke-opacity: 0.9;
-  color: black;
-  font-weight: bold;
+    /* measured, no uncertainty */
+    stroke: black;
+    stroke-width: 3px;
+    stroke-opacity: 0.9;
+    color: black;
+    font-weight: bold;
 }
-
 .label {
-  /* stroke-width: 0; */
-  margin-right: 20px;
+    /* stroke-width: 0; */
+    margin-right: 20px;
 }
-.label.period-current { border-bottom: 1px solid black; }
-.label.period-lgm { border-bottom: 1px dotted tan; }
-.label.period-mid { border-bottom: 1px dotted steelblue; }
-.label.period-50 { border-bottom: 1px dashed darkblue; }
-.label.period-70 { border-bottom: 1px dashed green; }
-
+.label.period-current {
+    border-bottom: 1px solid black;
+}
+.label.period-lgm {
+    border-bottom: 1px dotted tan;
+}
+.label.period-mid {
+    border-bottom: 1px dotted steelblue;
+}
+.label.period-50 {
+    border-bottom: 1px dashed darkblue;
+}
+.label.period-70 {
+    border-bottom: 1px dashed green;
+}
 .label-container {
-  padding-left: 40px;
+    padding-left: 40px;
 }
-
 .median {
-  fill: none;
-  stroke-width: 2;
-  stroke-opacity: 1;
+    fill: none;
+    stroke-width: 2;
+    stroke-opacity: 1;
 }
 .uncertainty {
-  fill-opacity: 0.1;
-  stroke-width: 0;
+    fill-opacity: 0.1;
+    stroke-width: 0;
 }
-
 .leaflet-container {
-  cursor: crosshair !important;
+    cursor: crosshair !important;
 }
-
 #coordinates {
     color: #777;
     font-size: 9pt;
@@ -100,13 +102,13 @@ body {
     border-bottom: 1px #eee dotted;
 }
 .content {
-  text-align: center;
+    text-align: center;
 }
 .guide-line {
-  stroke-width: 1;
-  stroke: #ddd;
+    stroke-width: 1;
+    stroke: #ddd;
 }
 text.guide-line {
-  stroke: none;
-  fill: black;
+    stroke: none;
+    fill: black;
 }

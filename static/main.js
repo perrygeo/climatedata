@@ -1,4 +1,3 @@
-
 var timestamp;
 var rcp = "85";
 var units = "F";
@@ -7,7 +6,12 @@ var duration = 500;
 var ease = 'quad-out'; // "sin-in-out";
 
 // D3.js
-var margin = {top: 10, right: 80, bottom: 30, left: 50},
+var margin = {
+        top: 10,
+        right: 80,
+        bottom: 30,
+        left: 50
+    },
     width = 560 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -27,70 +31,80 @@ var yAxis = d3.svg.axis()
 
 var area = d3.svg.area()
     .interpolate("cardinal")
-    .x(function(d) { return x(d.month); })
-    .y1(function(d) { return y(d.max); })
-    .y0(function(d) { return y(d.min); });
+    .x(function(d) {
+        return x(d.month);
+    })
+    .y1(function(d) {
+        return y(d.max);
+    })
+    .y0(function(d) {
+        return y(d.min);
+    });
 
 var line = d3.svg.line()
     .interpolate("cardinal")
-    .x(function(d) { return x(d.month); })
-    .y(function(d) { return y(d.median); });
+    .x(function(d) {
+        return x(d.month);
+    })
+    .y(function(d) {
+        return y(d.median);
+    });
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 x.domain([1, 12]);
 y.domain([-20, 50]);
 
 svg.append("g")
-  .attr("class", "x axis")
-  .attr("transform", "translate(0," + height + ")")
-  .call(xAxis)
-.append("text")
-  .attr("x", width)
-  .attr("dy", "-.31em")
-  .style("text-anchor", "end")
-  .text("Month");
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .append("text")
+    .attr("x", width)
+    .attr("dy", "-.31em")
+    .style("text-anchor", "end")
+    .text("Month");
 
 // Initial note
 svg.append("text")
-  .attr("y", height/2)
-  .attr("x", width/2)
-  .attr("class", "initnote")
-  .style("text-anchor", "middle")
-  .text("Click map to select location");
+    .attr("y", height / 2)
+    .attr("x", width / 2)
+    .attr("class", "initnote")
+    .style("text-anchor", "middle")
+    .text("Click map to select location");
 
 var hGuideLine = svg.append("line")
-                .attr("class", "guide-line")
-                .style("display", "none");
+    .attr("class", "guide-line")
+    .style("display", "none");
 
 var hGuideLineText = svg.append("text")
-                .attr("x", x(12))
-                .attr("dy", "0.3em")
-                .attr("dx", "0.3em")
-                .style("text-anchor", "start")
-                .attr("class", "guide-line")
-                .style("display", "none");
+    .attr("x", x(12))
+    .attr("dy", "0.3em")
+    .attr("dx", "0.3em")
+    .style("text-anchor", "start")
+    .attr("class", "guide-line")
+    .style("display", "none");
 
 var vGuideLine = svg.append("line")
-                .attr("class", "guide-line")
-                .style("display", "none");
+    .attr("class", "guide-line")
+    .style("display", "none");
 
 svg.append("g")
-  .attr("class", "y axis")
-  .call(yAxis)
-.append("text")
-  .attr("transform", "rotate(-90)")
-  .attr("y", 6)
-  .attr("dy", ".71em")
-  .attr("class", "ylabel")
-  .style("text-anchor", "end")
-  .text("Degrees ("+ units + ")");
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .attr("class", "ylabel")
+    .style("text-anchor", "end")
+    .text("Degrees (" + units + ")");
 
-d3.select("#selectVariable").on("change", function(){
+d3.select("#selectVariable").on("change", function() {
     variable = this.value;
     d3.select(".ylabel").text(labelLookup(variable));
     if (currentLatLng) {
@@ -99,7 +113,7 @@ d3.select("#selectVariable").on("change", function(){
     }
 });
 
-d3.select("#selectRcp").on("change", function(){
+d3.select("#selectRcp").on("change", function() {
     rcp = this.value;
     if (currentLatLng) {
         d3.selectAll(".clim.period-50").remove();
@@ -117,8 +131,12 @@ svg.append("rect")
     .attr("height", height)
     .style("fill", "none")
     .style("pointer-events", "all")
-    .on("mouseover", function() { d3.selectAll(".guide-line").style("display", null); })
-    .on("mouseout", function() { d3.selectAll(".guide-line").style("display", "none"); })
+    .on("mouseover", function() {
+        d3.selectAll(".guide-line").style("display", null);
+    })
+    .on("mouseout", function() {
+        d3.selectAll(".guide-line").style("display", "none");
+    })
     .on("mousemove", mousemove);
 
 function mousemove() {
@@ -127,17 +145,17 @@ function mousemove() {
     var month = x.invert(tx);
     var value = y.invert(ty);
     hGuideLine.attr("x1", 0)
-              .attr("y1", ty)
-              .attr("x2", width)
-              .attr("y2", ty);
+        .attr("y1", ty)
+        .attr("x2", width)
+        .attr("y2", ty);
 
     hGuideLineText.text(Math.round(value))
-                  .attr("y", ty);
+        .attr("y", ty);
 
     vGuideLine.attr("x1", tx)
-              .attr("y1", 0)
-              .attr("x2", tx)
-              .attr("y2", height);
+        .attr("y1", 0)
+        .attr("x2", tx)
+        .attr("y2", height);
 }
 
 function label(d) {
@@ -147,8 +165,8 @@ function label(d) {
 
 function labelLookup(x) {
     var labels = {
-        "tn": "Degrees ("+ units + ")",
-        "tx": "Degrees ("+ units + ")",
+        "tn": "Degrees (" + units + ")",
+        "tx": "Degrees (" + units + ")",
         "pr": "Precipitation (mm)"
     };
     return labels[x];
@@ -251,4 +269,3 @@ map.on('click', function(e) {
     coordDisplay.innerHTML = 'Latitude: ' + currentLatLng.lat + ' | Longitude: ' + currentLatLng.lng;
     updateChart(currentLatLng, false);
 });
-
