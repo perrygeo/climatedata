@@ -1,10 +1,15 @@
 import pandas
 import math
-from rasterstats import zonal_stats
+import rasterio
 from statistics import median  # python 3.4 only
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
+
+
+def tiny_window(dataset, x, y):
+    r, c = dataset.index(x, y)
+    return ((r, r+1), (c, c+1))
 
 
 def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
@@ -15,13 +20,17 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
     mins = []
     medians = []
     maxes = []
-    wkt = 'POINT({} {})'.format(lng, lat)
+
     for month in [x+1 for x in range(12)]:
         monthsub = sub[df['month'] == month]
         vals = []
         # Loop through paths and run zonal stats against each
         for path in monthsub['path']:
-            val = zonal_stats(wkt, path, stats="mean")[0]['mean']
+            with rasterio.open(path) as src:
+                win = tiny_window(src, lng, lat)
+                arr = src.read(window=win)
+
+            val = arr[0][0][0]
             if math.isnan(val):
                 raise ValueError("No data for {} at this location".format(path))
             if variable in ('tx', 'tn'):
@@ -31,7 +40,7 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
                 if units == "F":
                     val = ((val / 5.0) * 9) + 32
 
-            vals.append(val)
+            vals.append(float(val))  # ensure floats instead of numpy.float
 
         # find min, max for this month
         mins.append(min(vals))
@@ -64,8 +73,8 @@ def add_header(response):
 @app.route("/api/<variable>/<period>")
 def api(variable, period):
     kwargs = dict(
-        lat=request.args.get('lat'),
-        lng=request.args.get('lng'),
+        lat=float(request.args.get('lat')),
+        lng=float(request.args.get('lng')),
         units=request.args.get('units'),
         period=period,
         variable=variable,

@@ -256,7 +256,7 @@ geocoderControl.addTo(map);
 
 var marker;
 var currentLatLng;
-var coordDisplay = document.getElementById('coordinates');
+var coordDisplay = document.getElementById('coordinates')
 
 map.on('click', function(e) {
     if (marker) {
