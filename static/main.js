@@ -2,7 +2,7 @@ var timestamp;
 var rcp = "85";
 var units = "F";
 var variable = "tx"; // tn, pr
-var duration = 500;
+var duration = 250;
 var ease = 'quad-out'; // "sin-in-out";
 
 // D3.js
