@@ -1,10 +1,12 @@
 import pandas
 import rasterio
+import os
 from statistics import median  # python 3.4 only
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
+stacked_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stacks")
 
 # Load dataframe in global scope
 df = pandas.read_csv("climate_stacks.csv")
@@ -26,7 +28,8 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
 
     for month in [x+1 for x in range(12)]:
         monthsub = sub[sub['month'] == month]
-        stackpath = monthsub['path'].tolist()[0]
+        path = monthsub['path'].tolist()[0]
+        stackpath = os.path.join(stacked_dir, path)
 
         # Loop through paths and run zonal stats against each
         with rasterio.open(stackpath) as src:
