@@ -46,9 +46,9 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
                 vals = ((vals / 5.0) * 9) + 32
 
         # find min, max for this month
-        mins.append(min(vals))
-        maxes.append(max(vals))
-        medians.append(median(vals))
+        mins.append(float(min(vals)))
+        maxes.append(float(max(vals)))
+        medians.append(float(median(vals)))
 
     data = {
         "period": period,
