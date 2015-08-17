@@ -1,10 +1,13 @@
 import pandas
-import math
 import rasterio
 from statistics import median  # python 3.4 only
 
 from flask import Flask, jsonify, request
 app = Flask(__name__)
+
+
+# Load dataframe in global scope
+df = pandas.read_csv("climate_stacks.csv")
 
 
 def tiny_window(dataset, x, y):
@@ -22,25 +25,25 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
     maxes = []
 
     for month in [x+1 for x in range(12)]:
-        monthsub = sub[df['month'] == month]
-        vals = []
+        monthsub = sub[sub['month'] == month]
+        stackpath = monthsub['path'].tolist()[0]
+
         # Loop through paths and run zonal stats against each
-        for path in monthsub['path']:
-            with rasterio.open(path) as src:
-                win = tiny_window(src, lng, lat)
-                arr = src.read(window=win)
+        with rasterio.open(stackpath) as src:
+            win = tiny_window(src, lng, lat)
+            arr = src.read(window=win)
 
-            val = arr[0][0][0]
-            if math.isnan(val):
-                raise ValueError("No data for {} at this location".format(path))
-            if variable in ('tx', 'tn'):
-                # Temp are mult by 10x C, divided by 10 to get C
-                val = val / 10.0
-                # Then convert to Fahrenheit if specified
-                if units == "F":
-                    val = ((val / 5.0) * 9) + 32
+        vals = arr[:, 0, 0]
+        # TODO check null
+        # if math.isnan(val):
+        #     raise ValueError("No data for {} at this location".format(path))
 
-            vals.append(float(val))  # ensure floats instead of numpy.float
+        if variable in ('tx', 'tn'):
+            # Temp are mult by 10x C, divided by 10 to get C
+            vals = vals / 10.0
+            # Then convert to Fahrenheit if specified
+            if units == "F":
+                vals = ((vals / 5.0) * 9) + 32
 
         # find min, max for this month
         mins.append(min(vals))
@@ -55,10 +58,6 @@ def query_clim(df, rcp, lat, lng, variable="tx", period="70", units="C"):
                  for i, x in enumerate(zip(mins, medians, maxes))]}
 
     return data
-
-
-# Load dataframe in global scope
-df = pandas.read_csv("climate_data.csv")
 
 
 @app.route('/')
