@@ -1,4 +1,4 @@
-rasterio
+rasterio>=1.0a12
 flask
 ipdb
 gunicorn
